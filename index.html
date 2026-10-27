@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Condition Selector</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="default-bg">
+  <!-- Visual background effects container -->
+  <div id="bgEffects" class="bg-effects" aria-hidden="true"></div>
+
+  <main class="weather-card">
+    <header>
+      <h1>Weather Viewer</h1>
+      <p class="subtitle">Select a condition to see the forecast details</p>
+    </header>
+
+    <!-- Weather condition dropdown -->
+    <div class="control-group">
+      <label id="dropdownLabel" for="dropdownTrigger">Choose weather:</label>
+
+      <!-- Custom in-card dropdown that stays strictly inside card on mobile -->
+      <div class="custom-dropdown" id="customDropdown">
+        <button type="button" class="dropdown-trigger" id="dropdownTrigger" aria-haspopup="listbox" aria-expanded="false">
+          <span id="selectedLabel">Select weather condition</span>
+          <span class="dropdown-arrow">▼</span>
+        </button>
+
+        <ul class="dropdown-menu" id="dropdownMenu" role="listbox" aria-labelledby="dropdownLabel">
+          <li class="dropdown-item selected" data-value="" role="option" tabindex="0">Select weather condition</li>
+          <li class="dropdown-item" data-value="sunny" role="option" tabindex="0">☀️ Sunny</li>
+          <li class="dropdown-item" data-value="cloudy" role="option" tabindex="0">☁️ Cloudy</li>
+          <li class="dropdown-item" data-value="rainy" role="option" tabindex="0">🌧️ Rainy</li>
+          <li class="dropdown-item" data-value="snowy" role="option" tabindex="0">❄️ Snowy</li>
+          <li class="dropdown-item" data-value="thunderstorm" role="option" tabindex="0">⛈️ Thunderstorm</li>
+          <li class="dropdown-item" data-value="windy" role="option" tabindex="0">💨 Windy</li>
+        </ul>
+      </div>
+
+      <!-- Native select kept synchronized for Assessment 4 requirements -->
+      <select id="weatherSelect" class="visually-hidden" tabindex="-1" aria-hidden="true">
+        <option value="">Select weather condition</option>
+        <option value="sunny">Sunny</option>
+        <option value="cloudy">Cloudy</option>
+        <option value="rainy">Rainy</option>
+        <option value="snowy">Snowy</option>
+        <option value="thunderstorm">Thunderstorm</option>
+        <option value="windy">Windy</option>
+      </select>
+    </div>
+
+    <!-- Weather display area -->
+    <section class="display-area">
+      <div id="weatherIcon" class="weather-icon" aria-label="Weather icon">🌤️</div>
+      <h2 id="weatherCondition">No condition selected</h2>
+      <p id="weatherDescription" class="weather-desc">Please choose a weather condition from the dropdown above.</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

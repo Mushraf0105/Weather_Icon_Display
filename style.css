@@ -1,0 +1,566 @@
+/* Reset and base styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  transition: background 0.6s ease;
+}
+
+/* Background gradient per weather condition */
+body.default-bg {
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+}
+
+body.sunny-bg {
+  background: linear-gradient(135deg, #4facfe, #00f2fe, #fbc2eb);
+}
+
+body.cloudy-bg {
+  background: linear-gradient(135deg, #606c88, #3f4c6b);
+}
+
+body.rainy-bg {
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+}
+
+body.snowy-bg {
+  background: linear-gradient(135deg, #7084a4, #c9d6df);
+}
+
+body.thunderstorm-bg {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+
+body.windy-bg {
+  background: linear-gradient(135deg, #6190e8, #a7bfe8);
+}
+
+/* Background visual effects container - contained strictly to viewport */
+.bg-effects {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* ===================================================
+   WEATHER-SPECIFIC BACKGROUND VISUALS
+   =================================================== */
+
+/* 1. SUNNY: Glowing Sun and Light Beams */
+.bg-sun {
+  position: absolute;
+  top: 6%;
+  right: 8%;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffbe0 20%, #ffd000 65%, #ff9800 100%);
+  box-shadow: 
+    0 0 40px #ffd000,
+    0 0 90px #ff9800,
+    0 0 150px rgba(255, 152, 0, 0.55);
+  animation: pulseSun 3.5s ease-in-out infinite alternate;
+}
+
+.sun-rays {
+  position: absolute;
+  top: -35px;
+  left: -35px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 3px dashed rgba(255, 223, 0, 0.55);
+  animation: rotateRays 24s linear infinite;
+}
+
+@keyframes pulseSun {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 35px #ffd000, 0 0 70px #ff9800;
+  }
+  100% {
+    transform: scale(1.06);
+    box-shadow: 0 0 60px #ffd000, 0 0 120px #ff7b00;
+  }
+}
+
+@keyframes rotateRays {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.sun-bokeh {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  animation: floatBokeh 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatBokeh {
+  0% { transform: translateY(0) scale(1); opacity: 0.3; }
+  100% { transform: translateY(-30px) scale(1.15); opacity: 0.7; }
+}
+
+/* 2. SNOWY: Animated Falling Snowflakes */
+.snowflake {
+  position: absolute;
+  top: -30px;
+  color: #ffffff;
+  user-select: none;
+  animation: fallSnow linear infinite;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
+}
+
+@keyframes fallSnow {
+  0% {
+    transform: translateY(-20px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(105vh) translateX(25px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* 3. RAINY: Falling Raindrops */
+.raindrop {
+  position: absolute;
+  top: -40px;
+  width: 2px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.85));
+  border-radius: 2px;
+  animation: fallRain linear infinite;
+}
+
+@keyframes fallRain {
+  0% {
+    transform: translateY(-40px) skewX(-10deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(105vh) skewX(-10deg);
+    opacity: 0;
+  }
+}
+
+/* 4. CLOUDY: Drifting Background Clouds */
+.bg-cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 100px;
+  backdrop-filter: blur(2px);
+  animation: driftCloud linear infinite;
+}
+
+.bg-cloud::before,
+.bg-cloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.bg-cloud::before {
+  width: 50%;
+  height: 120%;
+  top: -55%;
+  left: 15%;
+}
+
+.bg-cloud::after {
+  width: 35%;
+  height: 90%;
+  top: -40%;
+  right: 15%;
+}
+
+@keyframes driftCloud {
+  0% {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.6;
+  }
+  85% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(calc(100vw + 50px));
+    opacity: 0;
+  }
+}
+
+/* 5. THUNDERSTORM: Lightning flashes and heavy storm */
+.lightning-flash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  animation: lightning 5s infinite;
+}
+
+@keyframes lightning {
+  0%, 89%, 93%, 97%, 100% {
+    opacity: 0;
+  }
+  90%, 92% {
+    opacity: 0.7;
+  }
+  94%, 96% {
+    opacity: 0.9;
+  }
+}
+
+/* 6. WINDY: Wind gust streaks and swirling leaves */
+.wind-streak {
+  position: absolute;
+  height: 3px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.7), transparent);
+  border-radius: 3px;
+  animation: blowWind linear infinite;
+}
+
+@keyframes blowWind {
+  0% {
+    transform: translateX(-150px) translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(calc(100vw + 50px)) translateY(30px);
+    opacity: 0;
+  }
+}
+
+.wind-leaf {
+  position: absolute;
+  font-size: 1.3rem;
+  user-select: none;
+  animation: blowLeaf linear infinite;
+}
+
+@keyframes blowLeaf {
+  0% {
+    transform: translateX(-50px) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(calc(100vw + 50px)) translateY(100px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ===================================================
+   MAIN WEATHER CARD COMPONENT
+   =================================================== */
+.weather-card {
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 30px 24px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  margin: auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.weather-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+  font-size: 1.75rem;
+  color: #2d3748;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 0.92rem;
+  color: #718096;
+  margin-bottom: 22px;
+}
+
+/* Dropdown control group */
+.control-group {
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  width: 100%;
+  position: relative;
+}
+
+.control-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+/* ===================================================
+   CUSTOM IN-CARD DROPDOWN (STRICTLY CONTAINED TO CARD)
+   =================================================== */
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-trigger {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 500;
+  border: 2px solid #cbd5e0;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #2d3748;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  text-align: left;
+}
+
+.dropdown-trigger:focus,
+.custom-dropdown.open .dropdown-trigger {
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.25);
+}
+
+.dropdown-arrow {
+  font-size: 0.75rem;
+  color: #718096;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* Dropdown menu strictly bounded to width of card */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
+  list-style: none;
+  padding: 6px;
+  margin: 0;
+  z-index: 100;
+  max-height: 220px;
+  overflow-y: auto;
+  display: none;
+}
+
+.custom-dropdown.open .dropdown-menu {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  color: #2d3748;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #ebf8ff;
+  color: #2b6cb0;
+  outline: none;
+}
+
+.dropdown-item.selected {
+  background-color: #3182ce;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Visually hide native select while keeping it functional for automated scripts */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Display section */
+.display-area {
+  padding: 20px 16px;
+  background: #f7fafc;
+  border-radius: 14px;
+  border: 1px solid #edf2f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.weather-icon {
+  font-size: 4.2rem;
+  line-height: 1;
+  user-select: none;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.weather-icon:hover {
+  transform: scale(1.15) rotate(5deg);
+}
+
+.display-area h2 {
+  font-size: 1.3rem;
+  color: #2d3748;
+}
+
+.weather-desc {
+  font-size: 0.92rem;
+  color: #4a5568;
+  line-height: 1.5;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 480px) {
+  body {
+    padding: 16px 12px;
+  }
+
+  .weather-card {
+    padding: 22px 16px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  header h1 {
+    font-size: 1.45rem;
+  }
+
+  .subtitle {
+    font-size: 0.84rem;
+    margin-bottom: 16px;
+  }
+
+  .control-group {
+    margin-bottom: 16px;
+  }
+
+  .dropdown-trigger {
+    padding: 11px 12px;
+    font-size: 14.5px;
+  }
+
+  .dropdown-item {
+    padding: 9px 11px;
+    font-size: 0.9rem;
+  }
+
+  .display-area {
+    padding: 16px 12px;
+  }
+
+  .weather-icon {
+    font-size: 3.5rem;
+  }
+
+  .display-area h2 {
+    font-size: 1.18rem;
+  }
+
+  .weather-desc {
+    font-size: 0.86rem;
+  }
+
+  .bg-sun {
+    width: 90px;
+    height: 90px;
+    top: 3%;
+    right: 5%;
+  }
+
+  .sun-rays {
+    width: 140px;
+    height: 140px;
+    top: -25px;
+    left: -25px;
+  }
+}
